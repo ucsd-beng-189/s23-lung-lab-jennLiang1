@@ -1,4 +1,5 @@
 %filename: cvsolve.m
+
 if(Mdiff(0,r)>0)
   %stop program and issue error message:
   error('M is too large')
@@ -22,3 +23,4 @@ for count=1:maxcount
   %set cv=midpoint of current interval:
   cv=(cv_lower+cv_upper)/2;
 end
+ 
