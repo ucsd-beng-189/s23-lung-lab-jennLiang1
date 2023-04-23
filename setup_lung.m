@@ -20,8 +20,8 @@ cI=cref
 
 %blood oxygen concentration at full hemoglobin saturation: 
 %cstar=4*(concentration of hemoglobin in blood expressed in moles/liter)
-cstar=cref
-% cstar = 1.5*cref
+% cstar=cref
+% cstar = 1.5*cref % Task 7 + 8
 
 %rate of oxygen consumption (moles/minute):
 M=0.25*cref*5.6

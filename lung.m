@@ -318,6 +318,7 @@ end
 
 % run after error message is raised
 fprintf("One cannot sustain with the normal resting rate of oxygen consumption when cref decreases to %0.5f with %d units of altitude increase \n", cref, i)
+
 figure(12)
 plot(Pv_list8)
 hold on 
@@ -333,6 +334,120 @@ plot(cv_list8)
 hold on 
 plot(cabar_list8)
 plot(cAbar_list8)
+hold off
+legend("cv",'cabar','cAbar')
+xlabel("altitude"); ylabel("oxygen concentration");
+title("altitude vs oxygen concentration (beta = 1)")
+
+%% Task 9
+clear all
+% clf
+global Pstar cstar n maxcount M Q camax RT cI;
+
+%comment out cstar = cref --> change to cstar = 1.5*cref in setup_lung.m
+Pv_list9=[]; Pabar_list9=[]; PAbar_list9=[];
+cv_list9=[]; cabar_list9=[]; cAbar_list9=[];
+
+cref=0.2/(22.4*(310/273));
+beta = 1;
+cstar_list = [];
+
+for i = 0:0.001:cref
+    cstar = cref-i;
+    cstar_list(end+1) = cstar; %include an extra cstar value that makes M too large
+    setup_lung
+    cvsolve
+    outchecklung
+
+    Pv_list9(end+1) = Pv;       %mean partial pressure in venous blood
+    Pabar_list9(end+1) = Pabar; %mean arterial oxygen partial pressure
+    PAbar_list9(end+1) = PAbar; %mean alveolar oxygen partial pressure
+
+    cv_list9(end+1) = cv;       %[oxygen] in venous blood
+    cabar_list9(end+1) = cabar; %mean arterial [oxygen] 
+    cAbar_list9(end+1) = cAbar; %mean alevolar [oxygen]
+end
+
+fprintf("One cannot sustain with the normal resting rate of oxygen consumption when cstar is decreased to %0.5f at beta = %0.1f\n", cstar, beta)
+
+figure(14)
+plot(cstar_list(1:end-1), Pv_list9)
+hold on 
+plot(cstar_list(1:end-1), Pabar_list9)
+plot(cstar_list(1:end-1), PAbar_list9)
+hold off
+legend("Pv","Pabar","PAbar")
+xlabel("cstar"); ylabel("oxygen partial pressure");
+title("cstar vs oxygen partial pressure (beta = 0)")
+
+figure(15)
+plot(cstar_list(1:end-1), cv_list9)
+hold on 
+plot(cstar_list(1:end-1), cabar_list9)
+plot(cstar_list(1:end-1), cAbar_list9)
+hold off
+legend("cv",'cabar','cAbar')
+xlabel("cstar"); ylabel("oxygen concentration");
+title("cstar vs oxygen concentration (beta = 0)")
+
+%% Task 10
+
+clear all
+clf
+global Pstar cstar n maxcount M Q camax RT cI;
+
+beta = 0;
+
+Pv_list10=[]; Pabar_list10=[]; PAbar_list10=[];
+cv_list10=[]; cabar_list10=[]; cAbar_list10=[];
+
+
+clear all
+clf
+global Pstar cstar n maxcount M Q camax RT cI;
+
+Pv_list10=[]; Pabar_list10=[]; PAbar_list10=[];
+cv_list10=[]; cabar_list10=[]; cAbar_list10=[];
+
+
+beta = 1; 
+cstar = 0.00236; % model individual with anemia
+
+for i = 1:1:300
+    cref=0.2/((22.4+i)*(310/273));
+    
+    setup_lung
+    cvsolve
+    outchecklung
+
+    Pv_list10(end+1) = Pv;       %mean partial pressure in venous blood
+    Pabar_list10(end+1) = Pabar; %mean arterial oxygen partial pressure
+    PAbar_list10(end+1) = PAbar; %mean alveolar oxygen partial pressure
+
+    cv_list10(end+1) = cv;       %[oxygen] in venous blood
+    cabar_list10(end+1) = cabar; %mean arterial [oxygen] 
+    cAbar_list10(end+1) = cAbar; %mean alevolar [oxygen]
+
+end
+
+% run after error message is raised
+fprintf("Individual with aneima cannot sustain with the normal resting rate of oxygen consumption when altitude increases by %d units at beta = %0.1f\n", i, beta) 
+
+figure(16)
+plot(Pv_list10)
+hold on 
+plot(Pabar_list10)
+plot(PAbar_list10)
+hold off
+legend("Pv","Pabar","PAbar")
+xlabel("altitude"); ylabel("oxygen partial pressure");
+title("altitude vs oxygen partial pressure (beta = 1)")
+
+figure(17)
+plot(cv_list10)
+hold on 
+plot(cabar_list10)
+plot(cAbar_list10)
 hold off
 legend("cv",'cabar','cAbar')
 xlabel("altitude"); ylabel("oxygen concentration");
